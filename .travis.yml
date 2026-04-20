@@ -1,0 +1,19 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install:
+    # Before installing, we want to build the tests for running. Right now we only have tests for the react app, that is, the client. Note that we specify ./client/* as the build context for the docker build command
+  - docker build -t moka2400/react-test -f ./client/Dockerfile.dev ./client
+    # Note that if we had multiple tests e.g. also in server or worker, we could add another build step here with specifications, and add another script below.
+
+scripts:
+  - docker run -e CI=true moka2400/react-test npm test
+
+after_success:
+  # multi prefix in below names is because this is a multi-container project :-)
+  - docker build -t moka2400/multi-client ./client
+  - docker build -t moka2400/multi-nginx ./nginx
+  - docker build -t moka2400/multi-server ./server
+  - docker build -t moka2400/multi-worker ./worker

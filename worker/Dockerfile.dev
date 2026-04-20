@@ -1,0 +1,9 @@
+FROM node:25-alpine3.22
+
+WORKDIR '/app'
+COPY ./package.json ./
+RUN npm install
+COPY ./ ./
+
+# 'dev' is a script specified in the package.json, where we use nodemon. Nodemon is a CLI tool used for refreshing/reloading an application whenever a change is made in the source code.
+CMD ["npm", "run", "dev"]
