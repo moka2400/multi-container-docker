@@ -17,3 +17,13 @@ after_success:
   - docker build -t moka2400/multi-nginx ./nginx
   - docker build -t moka2400/multi-server ./server
   - docker build -t moka2400/multi-worker ./worker
+
+  # Take the above images and push them to Docker Hub. It is in fact from there that we will use them in the continuous workflow integration process!
+  # First, Login to Docker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Then push images
+  - docker push moka2400/multi-client
+  - docker push moka2400/multi-nginx
+  - docker push moka2400/multi-server
+  - docker push moka2400/multi-worker
