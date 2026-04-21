@@ -27,3 +27,15 @@ after_success:
   - docker push moka2400/multi-nginx
   - docker push moka2400/multi-server
   - docker push moka2400/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-north-1"
+  app: "multi-container-docker"
+  env: "Multi-container-docker-env"
+  bucket_name: "elasticbeanstalk-eu-north-1-868072837228"
+  bucket_path: "multi-container-docker"
+  on:
+    branch: master # Only on branch master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY"
